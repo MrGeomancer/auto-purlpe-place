@@ -30,7 +30,7 @@ def anti_repeat_filter(list_of_unknowns):
     delete_list = []
     for every in range(len(list_of_unknowns)):
         count += 1
-        if list_of_unknowns[every][0] - ramx > 100 or list_of_unknowns[every][1] - ramy > 100:
+        if list_of_unknowns[every][0] - ramx > 10 or list_of_unknowns[every][1] - ramy > 10:
             ramx = list_of_unknowns[every][0]
             ramy = list_of_unknowns[every][1]
         else:
@@ -44,11 +44,27 @@ def anti_repeat_filter(list_of_unknowns):
 
 def find_unknowns():
     try:
-        clevers = list(pyautogui.locateAllOnScreen(r'png\important\clever.png', confidence=0.86))
-    except:
-        pass
-    clevers=anti_repeat_filter(clevers)
-    return clevers
+        list_of_unknowns = list(pyautogui.locateAllOnScreen(r'png\important\clever.png', confidence=0.86))
+    except Exception as e:
+        print('Не могу найти клеверы\n', e)
+
+    try:
+        list_of_unknowns = list(pyautogui.locateAllOnScreen(r'png\important\heart.png', confidence=0.8, grayscale=True))
+    except Exception as e:
+        print('Не могу найти сердечки\n',e)
+    try:
+        list_of_unknowns = list(pyautogui.locateAllOnScreen(r'png\important\smile.png', confidence=0.8, grayscale=True))
+    except Exception as e:
+        print('Не могу найти смайлики\n',e)
+    try:
+        list_of_unknowns = list(
+            pyautogui.locateAllOnScreen(r'png\important\jelly.png', confidence=0.8, grayscale=True))
+    except Exception as e:
+        print('Не могу найти желлейки\n', e)
+    list_of_unknowns=anti_repeat_filter(list_of_unknowns)
+
+
+    return list_of_unknowns
 
 
 
@@ -116,6 +132,7 @@ def find_match():
     unknowns = find_unknowns()
     for mixer in unknowns:
         pyautogui.click(mixer)
+    unknowns = find_unknowns()
     time.sleep(4)
     for mixer in unknowns:
         pyautogui.click(mixer)
