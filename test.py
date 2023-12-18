@@ -3,9 +3,50 @@ import keyboard
 from PIL import Image, ImageDraw
 import os
 
-for clever in pyautogui.locateAllOnScreen(r'png\important\clever.png', confidence=0.85):
-    print(pyautogui.click(clever))
+try:
+    clevers = list(pyautogui.locateAllOnScreen(r'png\important\clever.png', confidence=0.86))
+except:
+    pass
 
+for i in clevers:
+
+    print(clevers.index(i), i)
+
+print()
+print()
+print()
+# print(clevers[0])
+# print(clevers[1])
+# print(type(clevers[1]))
+# print(clevers[0][1])
+# print(type(clevers[0][0]))
+# print(int(clevers[0][0]))
+# print(clevers[46])
+
+ramx = 392
+ramy = -46
+count = 0
+delete_list = []
+for every in range(len(clevers)):
+    count += 1
+    # print(clevers)
+    if clevers[every][0] - ramx > 100 or clevers[every][1] - ramy > 100:
+        ramx = clevers[every][0]
+        ramy = clevers[every][1]
+    else:
+        delete_list.append(every)
+
+delete_list.reverse()
+
+# for i in clevers:
+#
+#     print(clevers.index(i), i)
+for index in delete_list:
+    clevers.pop(index)
+
+for i in clevers:
+
+    print(clevers.index(i), i)
 # def find_match():
 #     files = os.listdir(r'png\stash')
 #     for item in files:
