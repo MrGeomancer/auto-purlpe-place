@@ -6,48 +6,53 @@ import os
 
 def find_unknowns(coef):
     if coef == 1:
-        conf=0.75
+        coef = 0.75
     elif coef == 2:
-        conf=0.68
+        coef = 0.68
     list_of_unknowns = None
     try:
-        list_of_unknowns = list(pyautogui.locateAllOnScreen(r'png\important\clever.png', confidence=conf, grayscale=True))
+        list_of_unknowns = list(
+            pyautogui.locateAllOnScreen(r'png\important\clever.png', confidence=coef, grayscale=True))
         print('Обнаружен лвл с клеверами')
-        list_of_unknowns=anti_repeat_filter(list_of_unknowns)
+        list_of_unknowns = anti_repeat_filter(list_of_unknowns)
         return list_of_unknowns
     except Exception as e:
         print('Не могу найти клеверы\n', e)
     try:
-        list_of_unknowns = list(pyautogui.locateAllOnScreen(r'png\important\heart.png', confidence=conf, grayscale=True))
+        list_of_unknowns = list(
+            pyautogui.locateAllOnScreen(r'png\important\heart.png', confidence=coef, grayscale=True))
         print('Обнаружен лвл с сердечками')
-        list_of_unknowns=anti_repeat_filter(list_of_unknowns)
+        list_of_unknowns = anti_repeat_filter(list_of_unknowns)
         return list_of_unknowns
     except Exception as e:
-        print('Не могу найти сердечки\n',e)
+        print('Не могу найти сердечки\n', e)
     try:
-        list_of_unknowns = list(pyautogui.locateAllOnScreen(r'png\important\smile.png', confidence=conf, grayscale=True))
+        list_of_unknowns = list(
+            pyautogui.locateAllOnScreen(r'png\important\smile.png', confidence=coef, grayscale=True))
         print('Обнаружен лвл с смайликами')
-        list_of_unknowns=anti_repeat_filter(list_of_unknowns)
+        list_of_unknowns = anti_repeat_filter(list_of_unknowns)
         return list_of_unknowns
     except Exception as e:
-        print('Не могу найти смайлики\n',e)
+        print('Не могу найти смайлики\n', e)
     try:
-        list_of_unknowns = list(pyautogui.locateAllOnScreen(r'png\important\jelly.png', confidence=conf, grayscale=True))
+        list_of_unknowns = list(
+            pyautogui.locateAllOnScreen(r'png\important\jelly.png', confidence=coef, grayscale=True))
         print('Обнаружен лвл с желейками')
-        list_of_unknowns=anti_repeat_filter(list_of_unknowns)
+        list_of_unknowns = anti_repeat_filter(list_of_unknowns)
         return list_of_unknowns
     except Exception as e:
         print('Не могу найти желлейки\n', e)
     if list_of_unknowns == None:
         print('Ничего ваще не нашел.')
 
+
 def anti_repeat_filter(list_of_unknowns):
-    ramx = list_of_unknowns[0][0]-114
-    ramy = list_of_unknowns[0][1]-114
+    ramx = list_of_unknowns[0][0] - 114
+    ramy = list_of_unknowns[0][1] - 114
     count = 0
     delete_list = []
-    filter_scr = pyautogui.screenshot(r'png\fromfilter.png',
-                                   region=(500, 60, 920, 920))
+    filter_scr = pyautogui.screenshot(r'png\fromfilter.png'
+                                      , region=(500, 60, 920, 920))
     with Image.open(r'png\fromfilter.png') as im:
         draw = ImageDraw.Draw(im)
         for every in range(len(list_of_unknowns)):
@@ -58,14 +63,13 @@ def anti_repeat_filter(list_of_unknowns):
             else:
                 draw.rectangle((list_of_unknowns[every][0],
                                 list_of_unknowns[every][1],
-                                list_of_unknowns[every][0]+list_of_unknowns[every][2],
-                                list_of_unknowns[every][1]+list_of_unknowns[every][3]),outline='blue')
+                                list_of_unknowns[every][0] + list_of_unknowns[every][2],
+                                list_of_unknowns[every][1] + list_of_unknowns[every][3]), outline='blue')
                 delete_list.append(every)
         im.save(r'png\fromfilter.png')
         # im.show()
 
-
-    print('Через фильтр не прошло', len(delete_list),'значений:', delete_list)
+    print('Через фильтр не прошло', len(delete_list), 'значений:', delete_list)
 
     delete_list.reverse()
     for index in delete_list:
@@ -73,14 +77,14 @@ def anti_repeat_filter(list_of_unknowns):
     return list_of_unknowns
 
 
-def screen_All(unknowns):
+def screen_all(unknowns):
     for every in unknowns:
         pyautogui.click(every)
         time.sleep(0.4)
         position = pyautogui.position()
         name = f'{position[0]}, {position[1]}'
-        scr = pyautogui.screenshot(fr'png\stash\{name}.png',
-                                   region=(int(position[0])-52, int(position[1])-52, 105, 105))
+        scr = pyautogui.screenshot(fr'png\stash\{name}.png'
+                                   , region=(int(position[0]) - 52, int(position[1]) - 52, 105, 105))
         try:
             pyautogui.locateOnScreen(rf'png\important\avoid.png', confidence=0.8)
             print('Найден миксер, удаляем.')
@@ -89,19 +93,18 @@ def screen_All(unknowns):
             pass
         try:
             pyautogui.locateOnScreen(rf'png\important\avoid2.png', confidence=0.8)
-            os.replace(fr'png\stash\{name}.png',fr'png\stash\last\{name}.png')
+            os.replace(fr'png\stash\{name}.png', fr'png\stash\last\{name}.png')
             print('Найден повар, сослан в другую папку.')
         except:
             pass
         try:
             pyautogui.locateOnScreen(rf'png\important\joker.png', confidence=0.8)
-            os.replace(fr'png\stash\{name}.png',fr'png\stash\last\{name}.png')
+            os.replace(fr'png\stash\{name}.png', fr'png\stash\last\{name}.png')
             print('Найден жопкер, сослан в другую папку.')
         except:
             pass
         pyautogui.click(every)
     time.sleep(0.5)
-
 
 
 def find_match():
@@ -112,11 +115,11 @@ def find_match():
             if item2 == item:
                 continue
             try:
-                pyautogui.locate(rf'png\stash\{str(item)}',rf'png\stash\{str(item2)}',confidence=0.8)
+                pyautogui.locate(rf'png\stash\{str(item)}', rf'png\stash\{str(item2)}', confidence=0.8)
                 coords = str(item)[:-4].split(', ')
-                pyautogui.click(int(coords[0]), int(coords[1]),duration=0.33)
+                pyautogui.click(int(coords[0]), int(coords[1]), duration=0.33)
                 coords2 = str(item2)[:-4].split(', ')
-                pyautogui.click(int(coords2[0]), int(coords2[1]),duration=0.33)
+                pyautogui.click(int(coords2[0]), int(coords2[1]), duration=0.33)
                 os.remove(rf'png\stash\{str(item)}')
                 os.remove(rf'png\stash\{str(item2)}')
             except:
@@ -153,6 +156,7 @@ def find_match():
     time.sleep(12)
     do_it(1)
 
+
 def mix_all():
     print('тыкаем и на миксеры тоже')
     clear_stash()
@@ -163,14 +167,13 @@ def mix_all():
         position = pyautogui.position()
         name = f'{position[0]}, {position[1]}'
         scr = pyautogui.screenshot(fr'png\stash\{name}.png',
-                                   region=(int(position[0])-52, int(position[1])-52, 105, 105))
+                                   region=(int(position[0]) - 52, int(position[1]) - 52, 105, 105))
         pyautogui.click(every)
     try:
         find_match()
     except:
         time.sleep(12)
     do_it(1)
-
 
 
 def do_it(coef):
@@ -182,8 +185,9 @@ def do_it(coef):
     except:
         pass
     unknowns = find_unknowns(coef)
-    screen_All(unknowns)
+    screen_all(unknowns)
     find_match()
+
 
 def clear_stash():
     try:
@@ -199,5 +203,6 @@ def clear_stash():
         print()
     except Exception as e:
         print(e)
+
 
 do_it(1)
